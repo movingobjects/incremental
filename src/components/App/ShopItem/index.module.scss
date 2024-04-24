@@ -1,0 +1,24 @@
+
+@use 'styles/colors';
+
+:local {
+
+  .wrap {
+    width: 100px;
+    height: 100px;
+    padding: 1em;
+    border: 1px solid colors.$border;
+    background-color: white;
+    border-radius: 5px;
+
+    &.isDragging {
+      background-color: #f3f3f3;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+}
+

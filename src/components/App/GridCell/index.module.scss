@@ -1,0 +1,22 @@
+
+@use 'styles/colors';
+
+:local {
+
+  .wrap {
+    width: 100px;
+    height: 100px;
+    border: 1px solid colors.$border;
+    border-radius: 5px;
+
+    transition:
+      background-color 0.1s ease;
+
+    &.isOver {
+      background-color: magenta;
+    }
+
+  }
+
+}
+

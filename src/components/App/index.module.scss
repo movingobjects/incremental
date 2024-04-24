@@ -1,0 +1,38 @@
+
+@use 'styles/colors';
+
+:local {
+
+  .wrap {
+    padding: 100px;
+
+    .layout {
+      display: flex;
+      gap: 100px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 100px);
+      grid-template-rows: repeat(5, 100px);
+      gap: 5px;
+    }
+
+    .shop {
+      display: grid;
+      grid-template-columns: repeat(2, 100px);
+      grid-template-rows: repeat(5, 100px);
+      gap: 5px;
+
+    }
+
+  }
+
+}
+

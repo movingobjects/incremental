@@ -1,0 +1,20 @@
+[
+  {
+    "id": "RFsbNeOEs",
+    "name": "Item 1",
+    "baseCost": 10,
+    "costMult": 2
+  },
+  {
+    "id": "uvMVVVJEZ",
+    "name": "Item 2",
+    "baseCost": 100,
+    "costMult": 2
+  },
+  {
+    "id": "xSPUIlklP",
+    "name": "Item 3",
+    "baseCost": 1000,
+    "costMult": 2
+  }
+]
