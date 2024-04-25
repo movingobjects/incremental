@@ -1,45 +1,53 @@
-import { useAtomValue } from 'jotai';
-import { times } from 'lodash';
-import React, { useState } from 'react';
+import { useAtom } from 'jotai';
+import React from 'react';
 
 import * as atoms from 'atoms';
+import useCycle from 'hooks/useCycle';
+import useGridItems from 'hooks/useGridItems';
 
 import GridCell from './GridCell';
 import ShopItem from './ShopItem';
 
 import style from './index.module.scss';
 
-const GRID_SIZE = 5;
-
 const App = () => {
-  const items = useAtomValue(atoms.items);
+  const [pts, setPts] = useAtom(atoms.pts);
 
-  const [gridItemIds, setGridItemIds] = useState(
-    times(GRID_SIZE * GRID_SIZE, () => null)
-  );
+  const {
+    items = [],
+    gridItems = [],
+    getCyclePts,
+    removeItem,
+    onItemDrop
+  } = useGridItems({
+    gridSize: 5
+  });
 
-  function onItemDrop(index, item) {
-    setGridItemIds((state) => (
-      state.map((val, i) => (
-        (i === index) ? item?.id : val
-      ))
+  useCycle(({ cycles }) => {
+    setPts((prevPts) => (
+      prevPts + getCyclePts(cycles)
     ));
-  }
+  });
 
   return (
     <div className={style.wrap}>
 
       <h2>Incremental</h2>
 
+      <p>Points: {pts}</p>
+
       <div className={style.layout}>
 
         <ul className={style.grid}>
-          {gridItemIds.map((itemId, cellIndex) => (
+          {gridItems.map((item, cellIndex) => (
             <li key={cellIndex}>
               <GridCell
-                itemId={itemId}
+                item={item}
                 onItemDrop={(droppedItem) => {
                   onItemDrop(cellIndex, droppedItem);
+                }}
+                onRemoveClick={() => {
+                  removeItem(cellIndex);
                 }} />
             </li>
           ))}

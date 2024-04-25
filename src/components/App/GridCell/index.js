@@ -1,20 +1,16 @@
 import classNames from 'classnames';
-import { useAtomValue } from 'jotai';
 import React from 'react';
 import { useDrop } from 'react-dnd';
-
-import * as atoms from 'atoms';
 
 import GridItem from './GridItem';
 
 import style from './index.module.scss';
 
 const GridCell = ({
-  itemId,
-  onItemDrop = () => { }
+  item,
+  onItemDrop = () => { },
+  onRemoveClick = () => { }
 }) => {
-  const items = useAtomValue(atoms.items);
-
   const [
     {
       isOver
@@ -30,8 +26,6 @@ const GridCell = ({
     }
   }));
 
-  const item = items?.find(({ id }) => id === itemId);
-
   return (
     <div
       ref={drop}
@@ -41,7 +35,8 @@ const GridCell = ({
       })}>
       {item && (
         <GridItem
-          {...item} />
+          item={item}
+          onRemoveClick={onRemoveClick} />
       )}
     </div>
   );

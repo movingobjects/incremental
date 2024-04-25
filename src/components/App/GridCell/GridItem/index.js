@@ -3,11 +3,16 @@ import React from 'react';
 import style from './index.module.scss';
 
 const GridItem = ({
-  id,
-  name
+  item,
+  onRemoveClick
 }) => (
   <div className={style.wrap}>
-    <p>{name}</p>
+    <button
+      className={style.removeBtn}
+      onClick={onRemoveClick}>
+      &times;
+    </button>
+    <p>{item.name}</p>
   </div>
 );
 
