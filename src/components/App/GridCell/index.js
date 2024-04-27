@@ -12,6 +12,16 @@ const GridCell = ({
   onItemDrop = () => { },
   onRemoveClick = () => { }
 }) => {
+  const {
+    itemId,
+    level
+  } = cell || { };
+
+  const items = useAtomValue(atoms.items);
+  const balance = useAtomValue(atoms.balance);
+
+  const item = items?.find(({ id }) => id === itemId);
+
   const [
     {
       isOver
@@ -25,15 +35,10 @@ const GridCell = ({
     drop: ({ id }) => {
       onItemDrop(id);
     }
-  }));
-
-  const {
-    itemId,
-    level
-  } = cell || { };
-
-  const items = useAtomValue(atoms.items);
-  const item = items?.find(({ id }) => id === itemId);
+  }), [
+    items,
+    balance
+  ]);
 
   return (
     <div

@@ -16,7 +16,7 @@ const items = [
       100 * (count + 1)
     ),
     score: (level) => (
-      level * 2
+      level * 10
     )
   },
   {
@@ -26,7 +26,7 @@ const items = [
       1000 * (count + 1)
     ),
     score: (level) => (
-      level * 10
+      level * 100
     )
   }
 ];

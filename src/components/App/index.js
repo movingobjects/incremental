@@ -20,7 +20,7 @@ const App = () => {
     gridCells = [],
     cycleValue,
     getItemCost,
-    onItemDrop,
+    addItemToCell,
     clearCell,
     clearGrid
   } = useGridCells({
@@ -28,10 +28,10 @@ const App = () => {
   });
 
   useCycle(({ cycles }) => {
-    setBalance((prevPts) => (
-      prevPts + (cycleValue * cycles)
+    setBalance((prevBalance) => (
+      prevBalance + (cycleValue * cycles)
     ));
-  });
+  }, 0.5);
 
   function onClearClick() {
     clearGrid();
@@ -40,6 +40,16 @@ const App = () => {
   function onResetClick() {
     setBalance(0);
     clearGrid();
+  }
+
+  function onItemDrop(itemId, cellIndex) {
+    const cost = getItemCost(itemId);
+    if (balance >= cost) {
+      setBalance((prevBalance) => (
+        prevBalance - cost
+      ));
+      addItemToCell(itemId, cellIndex);
+    }
   }
 
   return (
@@ -78,7 +88,7 @@ const App = () => {
               <GridCell
                 cell={cell}
                 onItemDrop={(itemId) => {
-                  onItemDrop(index, itemId);
+                  onItemDrop(itemId, index);
                 }}
                 onRemoveClick={() => {
                   clearCell(index);

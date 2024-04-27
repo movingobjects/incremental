@@ -38,7 +38,7 @@ export default function useGridCells({
     ));
   }
 
-  const onItemDrop = (index, itemId) => {
+  const addItemToCell = (itemId, index) => {
     setGridCells((prevCells) => (
       prevCells.map((val, i) => (
         (i === index)
@@ -74,7 +74,7 @@ export default function useGridCells({
     gridCells,
     cycleValue,
     getItemCost,
-    onItemDrop,
+    addItemToCell,
     clearCell,
     clearGrid
   };
