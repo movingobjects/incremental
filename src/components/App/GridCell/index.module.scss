@@ -4,16 +4,60 @@
 :local {
 
   .wrap {
+    position: relative;
     width: 100px;
     height: 100px;
-    border: 1px solid colors.$border;
     border-radius: 5px;
+    background-color: #f3f3f3;
+    padding: 1em;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     transition:
       background-color 0.1s ease;
 
-    &.isOver {
-      background-color: magenta;
+    &.isDraggingOver {
+      background-color: #ddd;
+    }
+
+    &.hasItem {
+      border: 1px solid colors.$border;
+      background-color: white;
+      &:hover {
+        .removeBtn {
+          display: block;
+        }
+      }
+
+    }
+
+    .removeBtn {
+      cursor: pointer;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      z-index: 10;
+      display: none;
+      appearance: none;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      padding: 0;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.75)
+      }
+    }
+
+    p {
+      margin: 0;
+      display: inline-block;
+      text-align: center;
     }
 
   }

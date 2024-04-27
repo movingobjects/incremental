@@ -1,53 +1,85 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
+import { times } from 'lodash';
 import React from 'react';
 
 import * as atoms from 'atoms';
 import useCycle from 'hooks/useCycle';
-import useGridItems from 'hooks/useGridItems';
+import useGridCells from 'hooks/useGridCells';
 
 import GridCell from './GridCell';
-import ShopItem from './ShopItem';
+import ShopCell from './ShopCell';
 
 import style from './index.module.scss';
 
 const App = () => {
   const [pts, setPts] = useAtom(atoms.pts);
+  const items = useAtomValue(atoms.items);
 
   const {
-    items = [],
-    gridItems = [],
+    gridCells = [],
     getCyclePts,
-    removeItem,
-    onItemDrop
-  } = useGridItems({
+    onItemDrop,
+    clearCell,
+    clearGrid
+  } = useGridCells({
     gridSize: 5
   });
 
   useCycle(({ cycles }) => {
+    const newPts = (
+      times(cycles, () => (
+        getCyclePts()
+      )).reduce((sum, pts) => (
+        sum + pts
+      ), 0)
+    );
+
     setPts((prevPts) => (
-      prevPts + getCyclePts(cycles)
+      prevPts + newPts
     ));
   });
+
+  function onClearClick() {
+    clearGrid();
+  }
+
+  function onResetClick() {
+    setPts(0);
+    clearGrid();
+  }
 
   return (
     <div className={style.wrap}>
 
-      <h2>Incremental</h2>
+      <div className={style.header}>
+        <h2>Incremental</h2>
 
-      <p>Points: {pts}</p>
+        <p>Points: {pts}</p>
+        <p>
+          <button
+            onClick={onClearClick}>
+            Clear
+          </button>
+          {' '}
+          <button
+            onClick={onResetClick}>
+            Reset
+          </button>
+        </p>
+      </div>
 
       <div className={style.layout}>
 
         <ul className={style.grid}>
-          {gridItems.map((item, cellIndex) => (
-            <li key={cellIndex}>
+          {gridCells.map((cell, index) => (
+            <li key={index}>
               <GridCell
-                item={item}
-                onItemDrop={(droppedItem) => {
-                  onItemDrop(cellIndex, droppedItem);
+                cell={cell}
+                onItemDrop={(itemId) => {
+                  onItemDrop(index, itemId);
                 }}
                 onRemoveClick={() => {
-                  removeItem(cellIndex);
+                  clearCell(index);
                 }} />
             </li>
           ))}
@@ -56,8 +88,8 @@ const App = () => {
         <ul className={style.shop}>
           {items?.map((item, index) => (
             <li key={index}>
-              <ShopItem
-                item={item} />
+              <ShopCell
+                itemId={item?.id} />
             </li>
           ))}
         </ul>

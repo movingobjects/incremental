@@ -1,0 +1,39 @@
+
+@use 'styles/colors';
+
+:local {
+
+  .wrap {
+
+    p {
+      margin: 0;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .item {
+      width: 100px;
+      height: 100px;
+      padding: 1em;
+      border: 1px solid colors.$border;
+      background-color: white;
+      border-radius: 5px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      transition:
+        opacity 0.1s ease;
+    }
+
+    &.isDragging {
+      .item {
+        opacity: 0.25;
+      }
+    }
+
+  }
+
+}
+

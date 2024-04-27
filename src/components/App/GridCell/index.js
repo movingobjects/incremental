@@ -1,13 +1,14 @@
 import classNames from 'classnames';
+import { useAtomValue } from 'jotai';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import GridItem from './GridItem';
+import * as atoms from 'atoms';
 
 import style from './index.module.scss';
 
 const GridCell = ({
-  item,
+  cell,
   onItemDrop = () => { },
   onRemoveClick = () => { }
 }) => {
@@ -17,26 +18,46 @@ const GridCell = ({
     },
     drop
   ] = useDrop(() => ({
-    accept: 'shopItem',
+    accept: 'item',
     collect: (monitor) => ({
       isOver: monitor.isOver()
     }),
-    drop: (item) => {
-      onItemDrop(item);
+    drop: ({ id }) => {
+      onItemDrop(id);
     }
   }));
+
+  const {
+    itemId,
+    level
+  } = cell || { };
+
+  const items = useAtomValue(atoms.items);
+  const item = items?.find(({ id }) => id === itemId);
 
   return (
     <div
       ref={drop}
       className={classNames({
         [style.wrap]: true,
-        [style.isOver]: isOver
+        [style.isDraggingOver]: isOver,
+        [style.hasItem]: !!item
       })}>
-      {item && (
-        <GridItem
-          item={item}
-          onRemoveClick={onRemoveClick} />
+
+      <button
+        className={style.removeBtn}
+        onClick={onRemoveClick}>
+        &times;
+      </button>
+
+      {!!itemId?.length && (
+        <p>
+          {item.name}
+          {' '}
+          <span className={style.level}>
+            ({level})
+          </span>
+        </p>
       )}
     </div>
   );
