@@ -5,11 +5,19 @@ import { useDrag } from 'react-dnd';
 
 import * as atoms from 'atoms';
 
+import CurrencySymbol from 'components/shared/CurrencySymbol';
+
 import style from './index.module.scss';
 
 const ShopCell = ({
-  itemId
+  itemId,
+  cost = 0
 }) => {
+  const items = useAtomValue(atoms.items);
+  const balance = useAtomValue(atoms.balance);
+
+  const item = items?.find(({ id }) => id === itemId);
+
   const [
     { isDragging },
     drag
@@ -24,20 +32,23 @@ const ShopCell = ({
     }
   }));
 
-  const items = useAtomValue(atoms.items);
-  const item = items?.find(({ id }) => id === itemId);
-
   return (
     <div
       className={classNames({
         [style.wrap]: true,
-        [style.isDragging]: isDragging
+        [style.isDragging]: isDragging,
+        [style.canAfford]: balance >= cost
       })}>
 
       <div
         ref={drag}
         className={style.item}>
-        <p>{item.name}</p>
+        <p className={style.name}>
+          {item.name}
+        </p>
+        <p className={style.cost}>
+          <CurrencySymbol />{cost}
+        </p>
       </div>
 
     </div>

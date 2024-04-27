@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { times } from 'lodash';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import * as atoms from 'atoms';
 
@@ -17,6 +17,20 @@ export default function useGridCells({
   const [gridCells, setGridCells] = useState(
     times(gridSize * gridSize, () => getNewCell())
   );
+
+  const cycleValue = useMemo(() => (
+    gridCells
+      .map(({ itemId }) => (
+        items?.find(({ id }) => id === itemId)
+      ))
+      .filter((item) => !!item)
+      .reduce((sum, item) => (
+        sum + (item?.score(1) || 0) // TODO: level
+      ), 0)
+  ), [
+    gridCells,
+    items
+  ]);
 
   function getEmptyGrid() {
     return times(gridSize * gridSize, () => (
@@ -42,16 +56,13 @@ export default function useGridCells({
     ));
   };
 
-  const getCyclePts = () => (
-    gridCells
-      .map(({ itemId }) => (
-        items?.find(({ id }) => id === itemId)
-      ))
-      .filter((item) => !!item)
-      .reduce((sum, item) => (
-        sum + (item?.score(1) || 0)
-      ), 0)
-  );
+  const getItemCost = (itemId) => {
+    const item = items?.find(({ id }) => id === itemId);
+    const count = gridCells
+      ?.filter(({ itemId: id }) => id === itemId)
+      ?.length;
+    return item?.getCost(count) || 0;
+  };
 
   const clearGrid = () => {
     setGridCells(
@@ -61,7 +72,8 @@ export default function useGridCells({
 
   return {
     gridCells,
-    getCyclePts,
+    cycleValue,
+    getItemCost,
     onItemDrop,
     clearCell,
     clearGrid

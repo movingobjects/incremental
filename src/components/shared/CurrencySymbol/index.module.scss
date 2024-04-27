@@ -1,0 +1,13 @@
+
+@use 'styles/colors';
+
+:local {
+
+  .wrap {
+    color: colors.$highlight;
+    font-size: 20px;
+    line-height: 0;
+  }
+
+}
+

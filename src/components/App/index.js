@@ -1,10 +1,11 @@
 import { useAtom, useAtomValue } from 'jotai';
-import { times } from 'lodash';
 import React from 'react';
 
 import * as atoms from 'atoms';
 import useCycle from 'hooks/useCycle';
 import useGridCells from 'hooks/useGridCells';
+
+import CurrencySymbol from 'components/shared/CurrencySymbol';
 
 import GridCell from './GridCell';
 import ShopCell from './ShopCell';
@@ -12,12 +13,13 @@ import ShopCell from './ShopCell';
 import style from './index.module.scss';
 
 const App = () => {
-  const [pts, setPts] = useAtom(atoms.pts);
+  const [balance, setBalance] = useAtom(atoms.balance);
   const items = useAtomValue(atoms.items);
 
   const {
     gridCells = [],
-    getCyclePts,
+    cycleValue,
+    getItemCost,
     onItemDrop,
     clearCell,
     clearGrid
@@ -26,16 +28,8 @@ const App = () => {
   });
 
   useCycle(({ cycles }) => {
-    const newPts = (
-      times(cycles, () => (
-        getCyclePts()
-      )).reduce((sum, pts) => (
-        sum + pts
-      ), 0)
-    );
-
-    setPts((prevPts) => (
-      prevPts + newPts
+    setBalance((prevPts) => (
+      prevPts + (cycleValue * cycles)
     ));
   });
 
@@ -44,7 +38,7 @@ const App = () => {
   }
 
   function onResetClick() {
-    setPts(0);
+    setBalance(0);
     clearGrid();
   }
 
@@ -54,7 +48,15 @@ const App = () => {
       <div className={style.header}>
         <h2>Incremental</h2>
 
-        <p>Points: {pts}</p>
+        <p className={style.stats}>
+          <span className={style.balance}>
+            <CurrencySymbol />{balance}
+          </span>
+          <br />
+          <span className={style.cycleValue}>
+            <CurrencySymbol />{cycleValue}/cycle
+          </span>
+        </p>
         <p>
           <button
             onClick={onClearClick}>
@@ -89,7 +91,8 @@ const App = () => {
           {items?.map((item, index) => (
             <li key={index}>
               <ShopCell
-                itemId={item?.id} />
+                itemId={item?.id}
+                cost={getItemCost(item?.id)} />
             </li>
           ))}
         </ul>

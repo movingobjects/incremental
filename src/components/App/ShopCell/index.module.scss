@@ -4,11 +4,17 @@
 :local {
 
   .wrap {
+    font-size: 13px;
 
-    p {
-      margin: 0;
-      display: inline-block;
-      text-align: center;
+    &:not(.canAfford) {
+      pointer-events: none;
+      opacity: 0.25;
+    }
+
+    &.isDragging {
+      .item {
+        border: 1px solid colors.$border;
+      }
     }
 
     .item {
@@ -18,19 +24,37 @@
       border: 1px solid colors.$border;
       background-color: white;
       border-radius: 5px;
+      cursor: grab;
 
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
 
       transition:
+        border-color 0.2s ease,
         opacity 0.1s ease;
-    }
 
-    &.isDragging {
-      .item {
-        opacity: 0.25;
+      &:hover {
+        &:not(.isDragging) {
+          border-color: colors.$highlight;
+        }
       }
+
+      p {
+        margin: 2px 0;
+        text-align: center;
+
+        &.name {
+          font-weight: bold;
+        }
+
+        &.cost {
+
+        }
+
+      }
+
     }
 
   }
