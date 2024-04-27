@@ -90,7 +90,7 @@ const App = () => {
           {gridCells.map((cell, index) => (
             <li key={index}>
               <GridCell
-                cell={cell}
+                {...cell}
                 onItemDrop={(itemId) => {
                   onItemDrop(itemId, index);
                 }}

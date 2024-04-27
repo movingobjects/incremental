@@ -5,22 +5,19 @@ import { useDrop } from 'react-dnd';
 
 import * as atoms from 'atoms';
 
+import CurrencySymbol from 'components/shared/CurrencySymbol';
+
 import style from './index.module.scss';
 
 const GridCell = ({
-  cell,
+  item,
+  level,
+  cycleValue,
   onItemDrop = () => { },
   onRemoveClick = () => { }
 }) => {
-  const {
-    itemId,
-    level
-  } = cell || { };
-
-  const items = useAtomValue(atoms.items);
-  const balance = useAtomValue(atoms.balance);
-
-  const item = items?.find(({ id }) => id === itemId);
+  const gridCells = useAtomValue(atoms.gridCells);
+  const shopItems = useAtomValue(atoms.shopItems);
 
   const [
     {
@@ -36,8 +33,8 @@ const GridCell = ({
       onItemDrop(id);
     }
   }), [
-    items,
-    balance
+    gridCells,
+    shopItems
   ]);
 
   return (
@@ -55,14 +52,21 @@ const GridCell = ({
         &times;
       </button>
 
-      {!!itemId?.length && (
-        <p>
-          {item.name}
-          {' '}
-          <span className={style.level}>
-            ({level})
-          </span>
-        </p>
+      {!!item && (
+        <div className={style.item}>
+          <p className={style.label}>
+            <span className={style.name}>
+              {item?.name}
+            </span>
+            {' '}
+            <span className={style.level}>
+              Δ{level}
+            </span>
+          </p>
+          <p className={style.cycleValue}>
+            <CurrencySymbol />{cycleValue}
+          </p>
+        </div>
       )}
     </div>
   );

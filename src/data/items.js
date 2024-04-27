@@ -6,7 +6,7 @@ const items = [
       10 * count
     ),
     getCycleValue: (level) => (
-      (level + 1)
+      level
     )
   },
   {
@@ -16,7 +16,7 @@ const items = [
       100 * (count + 1)
     ),
     getCycleValue: (level) => (
-      (level + 1) * 10
+      level * 10
     )
   },
   {
@@ -26,7 +26,7 @@ const items = [
       1000 * (count + 1)
     ),
     getCycleValue: (level) => (
-      (level + 1) * 100
+      level * 100
     )
   }
 ];

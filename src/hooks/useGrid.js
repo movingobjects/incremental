@@ -37,7 +37,7 @@ export default function useGrid({
         (i === index)
           ? {
             itemId,
-            level: 0
+            level: 1
           }
           : val
       ))

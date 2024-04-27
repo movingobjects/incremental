@@ -56,9 +56,17 @@
     }
 
     p {
-      margin: 0;
-      display: inline-block;
+      margin: 2px 0;
       text-align: center;
+
+      .name {
+        font-weight: bold;
+      }
+
+      .level {
+        color: #999;
+      }
+
     }
 
   }
