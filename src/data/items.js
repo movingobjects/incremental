@@ -5,8 +5,8 @@ const items = [
     getCost: (count) => (
       10 * count
     ),
-    score: (level) => (
-      level
+    getCycleValue: (level) => (
+      (level + 1)
     )
   },
   {
@@ -15,8 +15,8 @@ const items = [
     getCost: (count) => (
       100 * (count + 1)
     ),
-    score: (level) => (
-      level * 10
+    getCycleValue: (level) => (
+      (level + 1) * 10
     )
   },
   {
@@ -25,8 +25,8 @@ const items = [
     getCost: (count) => (
       1000 * (count + 1)
     ),
-    score: (level) => (
-      level * 100
+    getCycleValue: (level) => (
+      (level + 1) * 100
     )
   }
 ];

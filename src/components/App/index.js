@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as atoms from 'atoms';
 import useCycle from 'hooks/useCycle';
-import useGridCells from 'hooks/useGridCells';
+import useGrid from 'hooks/useGrid';
 
 import CurrencySymbol from 'components/shared/CurrencySymbol';
 
@@ -14,22 +14,22 @@ import style from './index.module.scss';
 
 const App = () => {
   const [balance, setBalance] = useAtom(atoms.balance);
-  const items = useAtomValue(atoms.items);
+
+  const gridCells = useAtomValue(atoms.gridCells);
+  const shopItems = useAtomValue(atoms.shopItems);
+  const gridCycleValue = useAtomValue(atoms.gridCycleValue);
 
   const {
-    gridCells = [],
-    cycleValue,
-    getItemCost,
-    addItemToCell,
     clearCell,
-    clearGrid
-  } = useGridCells({
+    clearGrid,
+    addItemToCell
+  } = useGrid({
     gridSize: 5
   });
 
   useCycle(({ cycles }) => {
     setBalance((prevBalance) => (
-      prevBalance + (cycleValue * cycles)
+      prevBalance + (gridCycleValue * cycles)
     ));
   }, 0.5);
 
@@ -43,12 +43,16 @@ const App = () => {
   }
 
   function onItemDrop(itemId, cellIndex) {
-    const cost = getItemCost(itemId);
-    if (balance >= cost) {
+    const {
+      cost = 0,
+      canAfford = false
+    } = shopItems?.find(({ id }) => id === itemId) || { };
+
+    if (canAfford) {
+      addItemToCell(itemId, cellIndex);
       setBalance((prevBalance) => (
         prevBalance - cost
       ));
-      addItemToCell(itemId, cellIndex);
     }
   }
 
@@ -64,7 +68,7 @@ const App = () => {
           </span>
           <br />
           <span className={style.cycleValue}>
-            <CurrencySymbol />{cycleValue}/cycle
+            <CurrencySymbol />{gridCycleValue}/cycle
           </span>
         </p>
         <p>
@@ -98,11 +102,10 @@ const App = () => {
         </ul>
 
         <ul className={style.shop}>
-          {items?.map((item, index) => (
+          {shopItems?.map((item, index) => (
             <li key={index}>
               <ShopCell
-                itemId={item?.id}
-                cost={getItemCost(item?.id)} />
+                {...item} />
             </li>
           ))}
         </ul>
