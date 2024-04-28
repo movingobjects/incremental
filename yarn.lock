@@ -6989,6 +6989,11 @@ nth-check@^2.0.1:
   dependencies:
     boolbase "^1.0.0"
 
+number-abbreviate@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/number-abbreviate/-/number-abbreviate-2.0.0.tgz#e9cb2d18db800e153cf072829553c4afe0df7898"
+  integrity sha512-A28RCggQAd0GPafgnijus1IV48TD8lbVt/J6xzkhcfk7jvXbWbh5aTaQsMjZjWAJ6LK6EoGf306RzJsdu12OqQ==
+
 nwsapi@^2.2.0:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.8.tgz#a3552e65b74bf8cc89d0480c4132b61dbe54eccf"

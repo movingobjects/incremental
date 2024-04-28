@@ -28,10 +28,16 @@
       background-color: white;
       &:hover {
         .removeBtn {
-          display: block;
+          opacity: 1;
         }
       }
 
+    }
+
+    &:not(.hasItem) {
+      .removeBtn {
+        pointer-events: none;
+      }
     }
 
     .removeBtn {
@@ -40,18 +46,28 @@
       top: 5px;
       right: 5px;
       z-index: 10;
-      display: none;
       appearance: none;
       background-color: black;
       color: white;
       border: none;
       border-radius: 50%;
-      width: 25px;
-      height: 25px;
+      width: 20px;
+      height: 20px;
       padding: 0;
+      opacity: 0;
+      transition:
+        opacity 0.1s ease,
+        background-color 0.1s ease;
 
       &:hover {
         background-color: rgba(0, 0, 0, 0.75)
+      }
+    }
+
+    .upgradeBtn {
+      &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
       }
     }
 
@@ -59,11 +75,11 @@
       margin: 2px 0;
       text-align: center;
 
-      .name {
+      &.name {
         font-weight: bold;
       }
 
-      .level {
+      &.level {
         color: #999;
       }
 

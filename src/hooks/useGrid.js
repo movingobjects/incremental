@@ -23,10 +23,22 @@ export default function useGrid({
       times(gridSize * gridSize, () => ({ }))
     );
   };
+
   const clearCell = (cellIndex) => {
     setGrid((prevGrid) => (
       prevGrid.map((val, i) => (
         (i === cellIndex) ? { } : val
+      ))
+    ));
+  };
+
+  const upgradeCell = (cellIndex) => {
+    setGrid((prevGrid) => (
+      prevGrid.map((val, i) => (
+        (i === cellIndex) ? {
+          ...val,
+          level: (val?.level || 0) + 1
+        } : val
       ))
     ));
   };
@@ -37,7 +49,7 @@ export default function useGrid({
         (i === index)
           ? {
             itemId,
-            level: 1
+            level: 0
           }
           : val
       ))
@@ -45,6 +57,7 @@ export default function useGrid({
   }
 
   return {
+    upgradeCell,
     clearCell,
     clearGrid,
     addItemToCell

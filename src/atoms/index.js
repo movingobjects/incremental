@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 
 import itemsData from 'data/items';
 
-export const balance = atom(0);
+export const balance = atom(20);
 export const items = atom(itemsData);
 export const grid = atom([]);
 
@@ -11,6 +11,8 @@ export const grid = atom([]);
 export const gridCells = atom((get) => {
   const valGrid = get(grid);
   const valItems = get(items);
+  const valBalance = get(balance);
+
   return (
     valGrid
       .map(({
@@ -26,12 +28,22 @@ export const gridCells = atom((get) => {
           ?.filter(({ itemId: id }) => id === itemId)
           ?.length;
 
+        const upgradeCost = item?.upgradeCosts?.[level + 1];
+
+        const canUpgrade = (
+          upgradeCost >= 0 &&
+          valBalance >= upgradeCost
+        );
+        const cycleValue = item?.getCycleValue(level);
+
         return {
           itemId,
           level,
           item,
           count,
-          cycleValue: item?.getCycleValue(level)
+          upgradeCost,
+          canUpgrade,
+          cycleValue
         };
       })
   );
@@ -48,7 +60,7 @@ export const shopItems = atom((get) => {
         const count = valGrid
           ?.filter(({ itemId }) => itemId === item?.id)
           ?.length;
-        const cost = item?.getCost(count);
+        const cost = item?.buyCosts[count];
         const canAfford = valBalance >= cost;
 
         return {

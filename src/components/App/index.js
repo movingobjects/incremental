@@ -1,4 +1,5 @@
 import { useAtom, useAtomValue } from 'jotai';
+import abbreviate from 'number-abbreviate';
 import React from 'react';
 
 import * as atoms from 'atoms';
@@ -21,6 +22,7 @@ const App = () => {
 
   const {
     clearCell,
+    upgradeCell,
     clearGrid,
     addItemToCell
   } = useGrid({
@@ -31,15 +33,29 @@ const App = () => {
     setBalance((prevBalance) => (
       prevBalance + (gridCycleValue * cycles)
     ));
-  }, 0.5);
+  }, 0.1);
 
   function onClearClick() {
     clearGrid();
   }
 
   function onResetClick() {
-    setBalance(0);
+    setBalance(20);
     clearGrid();
+  }
+
+  function onUpgradeCell(cellIndex) {
+    const {
+      upgradeCost = 0,
+      canUpgrade = false
+    } = gridCells[cellIndex] || { };
+
+    if (canUpgrade) {
+      upgradeCell(cellIndex);
+      setBalance((prevBalance) => (
+        prevBalance - upgradeCost
+      ));
+    }
   }
 
   function onItemDrop(itemId, cellIndex) {
@@ -64,11 +80,11 @@ const App = () => {
 
         <p className={style.stats}>
           <span className={style.balance}>
-            <CurrencySymbol />{balance}
+            <CurrencySymbol />{abbreviate(balance, 2)}
           </span>
           <br />
           <span className={style.cycleValue}>
-            <CurrencySymbol />{gridCycleValue}/cycle
+            <CurrencySymbol />{abbreviate(gridCycleValue, 2)}/cycle
           </span>
         </p>
         <p>
@@ -93,6 +109,9 @@ const App = () => {
                 {...cell}
                 onItemDrop={(itemId) => {
                   onItemDrop(itemId, index);
+                }}
+                onUpgradeClick={() => {
+                  onUpgradeCell(index);
                 }}
                 onRemoveClick={() => {
                   clearCell(index);

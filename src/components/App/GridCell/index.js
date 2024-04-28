@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useAtomValue } from 'jotai';
+import abbreviate from 'number-abbreviate';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
@@ -13,7 +14,10 @@ const GridCell = ({
   item,
   level,
   cycleValue,
+  upgradeCost,
+  canUpgrade,
   onItemDrop = () => { },
+  onUpgradeClick = () => { },
   onRemoveClick = () => { }
 }) => {
   const gridCells = useAtomValue(atoms.gridCells);
@@ -54,18 +58,25 @@ const GridCell = ({
 
       {!!item && (
         <div className={style.item}>
-          <p className={style.label}>
-            <span className={style.name}>
-              {item?.name}
-            </span>
-            {' '}
-            <span className={style.level}>
-              Δ{level}
-            </span>
+          <p className={style.name}>
+            {item?.name}
           </p>
           <p className={style.cycleValue}>
             <CurrencySymbol />{cycleValue}
           </p>
+          {canUpgrade ? (
+            <button
+              className={classNames({
+                [style.upgradeBtn]: true,
+                [style.disabled]: !canUpgrade
+              })}
+              onClick={onUpgradeClick}>
+              Δ{level} (<CurrencySymbol />{abbreviate(upgradeCost, 2)})
+            </button>
+          ) : (
+            <p>Δ{level}</p>
+          )}
+
         </div>
       )}
     </div>

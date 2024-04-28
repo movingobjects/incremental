@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import abbreviate from 'number-abbreviate';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 
@@ -41,7 +42,7 @@ const ShopCell = ({
           {name}
         </p>
         <p className={style.cost}>
-          <CurrencySymbol />{cost}
+          <CurrencySymbol />{abbreviate(cost, 2)}
         </p>
       </div>
 
