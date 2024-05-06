@@ -11,17 +11,21 @@ import CurrencySymbol from 'components/shared/CurrencySymbol';
 import style from './index.module.scss';
 
 const GridCell = ({
-  item,
+  cellIndex,
+  itemId,
   level,
-  cycleValue,
-  upgradeCost,
-  canUpgrade,
   onItemDrop = () => { },
   onUpgradeClick = () => { },
   onRemoveClick = () => { }
 }) => {
   const gridCells = useAtomValue(atoms.gridCells);
   const shopItems = useAtomValue(atoms.shopItems);
+  const balance = useAtomValue(atoms.balance);
+
+  const item = shopItems?.find(({ id }) => id === itemId);
+  const cycleValue = item?.getCycleValue(level, gridCells, cellIndex);
+  const upgradeCost = item?.upgradeCosts?.[level + 1];
+  const canUpgrade = balance > upgradeCost;
 
   const [
     {

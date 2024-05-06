@@ -1,3 +1,63 @@
+const indexToColRow = (cellIndex) => ({
+  col: cellIndex % 5,
+  row: Math.floor(cellIndex / 5)
+});
+
+const getAdjacent = (gridCells, cellIndex) => {
+  const {
+    col,
+    row
+  } = indexToColRow(cellIndex);
+
+  gridCells?.filter((cell, index) => {
+    if (index === cellIndex) return false;
+
+    const {
+      col: testCol,
+      row: testRow
+    } = indexToColRow(index);
+
+    if (testCol === col) {
+      if (
+        testRow === row - 1 ||
+        testRow === row + 1
+      ) {
+        return true;
+      }
+    } else if (testRow === row) {
+      if (
+        testCol === col - 1 ||
+        testCol === col + 1
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+};
+
+const getSurrounding = (gridCells, cellIndex) => {
+  const {
+    col,
+    row
+  } = indexToColRow(cellIndex);
+
+  gridCells?.filter((cell, index) => {
+    if (index === cellIndex) return false;
+
+    const {
+      col: testCol,
+      row: testRow
+    } = indexToColRow(index);
+
+    return (
+      Math.abs(col - testCol) <= 1 &&
+      Math.abs(row - testRow) <= 1
+    );
+  });
+};
+
 const items = [
   {
     id: 'generator',
@@ -38,7 +98,10 @@ const items = [
       40000,
       50000
     ],
-    getCycleValue: (level, gridCells) => (
+    performGridEffect: (gridCells, cellIndex) => (
+      gridCells
+    ),
+    getCycleValue: (level, gridCells, cellIndex) => (
       level + 1
     )
   },
@@ -77,7 +140,10 @@ const items = [
       20000,
       21000
     ],
-    getCycleValue: (level, gridCells) => (
+    performGridEffect: (gridCells, cellIndex) => (
+      gridCells
+    ),
+    getCycleValue: (level, gridCells, cellIndex) => (
       (level + 1) * 10
     )
   },
@@ -114,7 +180,10 @@ const items = [
       300000,
       500000
     ],
-    getCycleValue: (level, gridCells) => (
+    performGridEffect: (gridCells, cellIndex) => (
+      gridCells
+    ),
+    getCycleValue: (level, gridCells, cellIndex) => (
       (level + 1) * 100
     )
   },
@@ -153,7 +222,10 @@ const items = [
       150000000,
       150000000
     ],
-    getCycleValue: (level, gridCells) => (
+    performGridEffect: (gridCells, cellIndex) => (
+      gridCells
+    ),
+    getCycleValue: (level, gridCells, cellIndex) => (
       (level + 1) * 100
     )
   },
@@ -190,7 +262,10 @@ const items = [
       150000000,
       150000000
     ],
-    getCycleValue: (level, gridCells) => (
+    performGridEffect: (gridCells, cellIndex) => (
+      gridCells
+    ),
+    getCycleValue: (level, gridCells, cellIndex) => (
       (level + 1) * 100
     )
   },
@@ -229,7 +304,10 @@ const items = [
       1000000000,
       1000000000
     ],
-    getCycleValue: (level, gridCells) => (
+    performGridEffect: (gridCells, cellIndex) => (
+      gridCells
+    ),
+    getCycleValue: (level, gridCells, cellIndex) => (
       (level + 1) * 100
     )
   },
@@ -266,7 +344,10 @@ const items = [
       1000000000000000,
       1000000000000000
     ],
-    getCycleValue: (level, gridCells) => (
+    performGridEffect: (gridCells, cellIndex) => (
+      gridCells
+    ),
+    getCycleValue: (level, gridCells, cellIndex) => (
       (level + 1) * 100
     )
   }
